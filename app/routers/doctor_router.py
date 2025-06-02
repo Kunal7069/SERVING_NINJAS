@@ -6,11 +6,12 @@ from app.schemas.doctor_schema import DoctorCreate,DoctorResponse
 from app.schemas.slot_schema import SlotResponse
 from app.services.doctor_service import get_free_slots_by_doctor
 from app.services.doctor_service import create_doctor_with_slots, get_all_doctors_with_slots
-
+from datetime import date
 
 from pydantic import BaseModel
 class DoctorIdRequest(BaseModel):
     doctor_id: int
+    date: date
 
 router = APIRouter(prefix="/doctor", tags=["Doctor"])
 
@@ -35,4 +36,4 @@ def get_all_doctors(db: Session = Depends(get_db)):
 
 @router.post("/free-slots/", response_model=List[SlotResponse])
 def free_slots(request: DoctorIdRequest, db: Session = Depends(get_db)):
-    return get_free_slots_by_doctor(db, request.doctor_id)
+    return get_free_slots_by_doctor(db, request.doctor_id,request.date)

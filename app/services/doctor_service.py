@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from app.models.doctor import Doctor
 from app.models.slot import Slot
 from app.models.appointment import DoctorAppointment
+from datetime import date
 
 def create_doctor_with_slots(db: Session, doctor_data: dict):
     # Extract slot info and remove from doctor_data
@@ -23,15 +24,31 @@ def create_doctor_with_slots(db: Session, doctor_data: dict):
 def get_all_doctors_with_slots(db: Session):
     return db.query(Doctor).all()
 
-def get_free_slots_by_doctor(db: Session, doctor_id: int):
+# def get_free_slots_by_doctor(db: Session, doctor_id: int):
+#     # Get all slots for this doctor
+#     all_slots = db.query(Slot).filter(Slot.doctor_id == doctor_id).all()
+    
+#     # Get slot_ids already booked
+#     booked_slot_ids = db.query(DoctorAppointment.slot_id).filter(DoctorAppointment.doctor_id == doctor_id).all()
+#     booked_slot_ids = [slot_id for (slot_id,) in booked_slot_ids]
+    
+#     # Filter slots which are not booked
+#     free_slots = [slot for slot in all_slots if slot.id not in booked_slot_ids]
+    
+#     return free_slots
+
+def get_free_slots_by_doctor(db: Session, doctor_id: int, selected_date: date):
     # Get all slots for this doctor
     all_slots = db.query(Slot).filter(Slot.doctor_id == doctor_id).all()
-    
-    # Get slot_ids already booked
-    booked_slot_ids = db.query(DoctorAppointment.slot_id).filter(DoctorAppointment.doctor_id == doctor_id).all()
+
+    # Get slot_ids already booked for the given date
+    booked_slot_ids = db.query(DoctorAppointment.slot_id).filter(
+        DoctorAppointment.doctor_id == doctor_id,
+        DoctorAppointment.date == selected_date
+    ).all()
     booked_slot_ids = [slot_id for (slot_id,) in booked_slot_ids]
-    
+
     # Filter slots which are not booked
     free_slots = [slot for slot in all_slots if slot.id not in booked_slot_ids]
-    
+
     return free_slots

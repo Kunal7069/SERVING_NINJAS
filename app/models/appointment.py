@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, Date
 from sqlalchemy.orm import relationship
 from app.database.config import Base
 
@@ -8,6 +8,8 @@ class DoctorAppointment(Base):
     id = Column(Integer, primary_key=True, index=True)
     doctor_id = Column(Integer, ForeignKey("doctors.id"))
     slot_id = Column(Integer, ForeignKey("slots.id"))
+    
+    date = Column(Date, nullable=False)  # <-- appointment date
 
     patient_name = Column(String, nullable=False)
     gender = Column(String, nullable=False)
