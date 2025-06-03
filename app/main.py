@@ -1,23 +1,7 @@
-# from fastapi import FastAPI
-# from app.database.config import engine, Base
-# from app.routers import doctor_router, user_router, appointment_router
-
-# app = FastAPI(title="Serving Ninjas API")
-
-# # Create tables at startup
-# @app.on_event("startup")
-# def create_tables():
-#     Base.metadata.create_all(bind=engine)
-
-# # Include routers
-# app.include_router(doctor_router.router)
-# app.include_router(user_router.router)
-# app.include_router(appointment_router.router)
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database.config import engine, Base
-from app.routers import doctor_router, user_router, appointment_router
+from app.routers import doctor_router, user_router, appointment_router,educator_routes,educator_appointment_routes
 
 app = FastAPI(title="Serving Ninjas API")
 
@@ -43,3 +27,5 @@ def create_tables():
 app.include_router(doctor_router.router)
 app.include_router(user_router.router)
 app.include_router(appointment_router.router)
+app.include_router(educator_routes.router)
+app.include_router(educator_appointment_routes.router)
