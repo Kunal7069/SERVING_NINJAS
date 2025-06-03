@@ -5,7 +5,7 @@ class UserCreate(BaseModel):
     name : str
     email: EmailStr
     password: str
-    role: Literal["user", "doctor", "tiffin"]
+    role: Literal["user", "doctor", "educator"]
 
 class UserResponse(BaseModel):
     id: int
