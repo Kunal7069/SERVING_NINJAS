@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from app.models.appointment import DoctorAppointment
 from sqlalchemy.orm import joinedload
 
+
 def create_appointment(db: Session, appointment_data: dict):
     appointment = DoctorAppointment(**appointment_data)
     db.add(appointment)
