@@ -31,8 +31,9 @@ class StudentNameRequest(BaseModel):
 @router.post("/by-student")
 def get_appointments_for_student(data: StudentNameRequest, db: Session = Depends(get_db)):
     appointments = get_appointments_by_student_name(db, data.student_name)
+    result= []
     if not appointments:
-        raise HTTPException(status_code=404, detail="No appointments found for this student.")
+        return result
     return appointments
 
 
@@ -46,6 +47,7 @@ def get_appointments_for_educator(data: EducatorNameRequest, db: Session = Depen
         raise HTTPException(status_code=404, detail="Educator not found.")
 
     appointments = get_appointments_by_educator_id(db, educator.id)
+    result= []
     if not appointments:
-        raise HTTPException(status_code=404, detail="No appointments found for this educator.")
+        return result
     return appointments

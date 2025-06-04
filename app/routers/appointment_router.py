@@ -25,8 +25,9 @@ class PatientNameRequest(BaseModel):
 @router.post("/by-patient")
 def get_appointments_for_patient(data: PatientNameRequest, db: Session = Depends(get_db)):
     appointments = get_appointments_by_patient_name(db, data.patient_name)
+    result = []
     if not appointments:
-        raise HTTPException(status_code=404, detail="No appointments found for this patient.")
+        return result
     return appointments
 
 class DoctorIdRequest(BaseModel):
@@ -37,6 +38,7 @@ def get_appointments_for_doctor(data: DoctorIdRequest, db: Session = Depends(get
     doctor = db.query(Doctor).filter(Doctor.doctor_name == data.doctor_name).first()
 
     appointments = get_appointments_by_doctor_id(db, doctor.id)
+    result=[]
     if not appointments:
-        raise HTTPException(status_code=404, detail="No appointments found for this doctor.")
+        return result
     return appointments
